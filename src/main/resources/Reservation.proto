@@ -1,0 +1,164 @@
+syntax = "proto3";
+option java_package = "com.res.reservation.stubs";
+option java_multiple_files = true;
+
+//enumeration pour le type de chambre
+enum TypeChambre {
+  SIMPLE = 0;
+  DOUBLE = 1;
+}
+
+//Message représentant un Client
+message Client {
+  string id = 1;
+  string nom = 2;
+  string prenom = 3;
+  string email = 4;
+  string telephone = 5;
+}
+
+message ClientRequest {
+  string nom = 1;
+  string prenom = 2;
+  string email = 3;
+  string telephone = 4;
+}
+
+message Chambre {
+  string id = 1;
+  TypeChambre type = 2;
+  float prix = 3;
+  bool disponible = 4;
+  repeated Reservation reservations = 5;
+}
+message ChambreRequest {
+  TypeChambre type = 1;
+  float prix = 2;
+  bool disponible = 3;
+}
+
+message Reservation {
+  string id = 1;
+  string dateDebut = 2;
+  string dateFin = 3;
+  string preferences = 4;
+  Client client = 5;
+  Chambre chambre = 6;
+}
+message ReservationRequest {
+  string dateDebut = 1;
+  string dateFin = 2;
+  string preferences = 3;
+  string clientId = 4;
+  string chambreId = 5;
+}
+// Messages pour les requêtes et réponses du service
+
+// Requête pour obtenir tous les clients
+message GetAllClientsRequest {}
+message GetAllClientsResponse {
+  repeated Client clients = 1;
+}
+
+message GetClientByIdRequest {
+  string id = 1;
+}
+message GetClientByIdResponse {
+  Client client = 1;
+}
+
+message SaveClientRequest {
+  ClientRequest client = 1;
+}
+
+message SaveClientResponse {
+  Client client = 1;
+}
+
+message DeleteClientRequest {
+  string id = 1;
+}
+
+message DeleteClientResponse {
+  bool success = 1;
+}
+
+//pour Chambre
+
+message GetChambreByIdRequest {
+  string id = 1;
+}
+message GetChambreByIdResponse {
+  Chambre chambre = 1;
+}
+
+message SaveChambreRequest {
+  ChambreRequest chambre = 1;
+}
+
+message SaveChambreResponse {
+  Chambre chambre = 1;
+}
+
+message DeleteChambreRequest {
+  string id = 1;
+}
+
+message DeleteChambreResponse {
+  bool success = 1;
+}
+
+//pour réservation
+
+message GetReservationByIdRequest {
+  string id = 1;
+}
+message GetReservationByIdResponse {
+  Reservation reservation = 1;
+}
+
+message SaveReservationRequest {
+  ReservationRequest reservation = 1;
+}
+
+message SaveReservationResponse {
+  Reservation reservation = 1;
+}
+
+message DeleteReservationRequest {
+  string id = 1;
+}
+
+message DeleteReservationResponse {
+  bool success = 1;
+}
+
+message GetAllReservationsRequest {}
+message GetAllReservationsResponse {
+  repeated Reservation reservations = 1;
+}
+message GetAllChambresRequest {}
+message GetAllChambresResponse {
+  repeated Chambre chambres = 1;
+}
+service ClientService {
+  rpc AllClients(GetAllClientsRequest) returns (GetAllClientsResponse);
+  rpc ClientById(GetClientByIdRequest) returns (GetClientByIdResponse);
+  rpc SaveClient(SaveClientRequest) returns (SaveClientResponse);
+  rpc deleteClient(DeleteClientRequest) returns (DeleteClientResponse);
+}
+
+service ChambreService {
+  rpc AllChambres(GetAllChambresRequest) returns (GetAllChambresResponse);
+  rpc ChambreById(GetChambreByIdRequest) returns (GetChambreByIdResponse);
+  rpc SaveChambre(SaveChambreRequest) returns (SaveChambreResponse);
+  rpc deleteChambre(DeleteChambreRequest) returns (DeleteChambreResponse);
+}
+
+
+service ReservationService {
+  rpc AllReservations(GetAllReservationsRequest) returns (GetAllReservationsResponse);
+  rpc ReservationById(GetReservationByIdRequest) returns (GetReservationByIdResponse);
+  rpc SaveReservation(SaveReservationRequest) returns (SaveReservationResponse);
+  rpc deleteReservation(DeleteReservationRequest) returns (DeleteReservationResponse);
+}
